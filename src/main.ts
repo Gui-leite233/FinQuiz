@@ -3,15 +3,16 @@ import { App } from "app";
 import { env } from "env";
 import { createServer } from "http";
 import { WebSocketServer } from "ws";
+import express from "express";
 
-AppFactory.create(App).then(app => {
-  const expressApp = app.getExpressApp();
-  const server = createServer(expressApp);
+AppFactory.create(App).then(() => {
+  const expressApp = express();
+  const server = createServer(expressApp); 
 
-  const wss = new WebSocketServer({ noServer: true });
+  const wss = new WebSocketServer({ noServer: true }); // Create WebSocket server
 
   server.on("upgrade", (request, socket, head) => {
-    wss.handleUpgrade(request, socket, head, ws => {
+    wss.handleUpgrade(request, socket, head, (ws) => {
       wss.emit("connection", ws, request);
     });
   });
