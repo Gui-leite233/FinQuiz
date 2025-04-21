@@ -1,7 +1,10 @@
-import { Controller, Post, Body } from '@expressots/core';
-import { ImportQuestionsUseCase, UpdateSettingsUseCase } from '../use-cases';
+// src/useCases/admin/controller/admin-controller.controller.ts
+import { Controller, Post, body, controller } from '@expressots/adapter-express';
+import { ImportQuestionsUseCase } from '../use-cases/import-questions.usecase';
+import { UpdateSettingsUseCase } from '../use-cases/update-settings.usecase';
+import { ImportDto, SettingsDto } from '../dtos';
 
-@Controller('admin')
+@controller('admin')
 export class AdminController {
   constructor(
     private readonly importQuestions: ImportQuestionsUseCase,
@@ -9,12 +12,12 @@ export class AdminController {
   ) {}
 
   @Post('import-questions')
-  importQuestionsEndpoint(@Body() dto: ImportDto) {
+  importQuestionsEndpoint(@body() dto: ImportDto) {
     return this.importQuestions.execute(dto);
   }
 
   @Post('update-settings')
-  updateSettingsEndpoint(@Body() dto: SettingsDto) {
+  updateSettingsEndpoint(@body() dto: SettingsDto) {
     return this.updateSettings.execute(dto);
   }
 }

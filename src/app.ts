@@ -1,11 +1,10 @@
+// src/app.ts
 import { AppExpress } from "@expressots/adapter-express";
 import { AppContainer, Env } from "@expressots/core";
 import { AppModule } from "@useCases/app/app.module";
 
 export class App extends AppExpress {
     private config: AppContainer = this.configContainer([AppModule]);
-
-    
 
     async globalConfiguration(): Promise<void> {
         this.setGlobalRoutePrefix("/v1");
