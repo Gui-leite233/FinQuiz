@@ -1,10 +1,10 @@
-// src/app.ts
 import { AppExpress, IWebServerPublic } from "@expressots/adapter-express";
 import { AppContainer, Env, provideSingleton, CreateModule, ContainerModule } from "@expressots/core";
 import { WebSocketServer } from "ws";
 import { AppModule } from "./useCases/app/app.module";
 import { AdminModule } from "./useCases/admin/admin.module";
 import { RealTimeModule } from "./useCases/real/time/real-time.module";
+import { AuthModule } from "./useCases/auth/auth.module";
 
 interface CustomAppContainer extends AppContainer {
     Provider: {
@@ -17,7 +17,7 @@ interface CustomAppContainer extends AppContainer {
     };
 }
 
-const RootModule = CreateModule([AppModule, AdminModule, RealTimeModule]);
+const RootModule = CreateModule([AppModule, AdminModule, RealTimeModule, AuthModule]);
 
 @provideSingleton(App)
 export class App extends AppExpress implements IWebServerPublic {

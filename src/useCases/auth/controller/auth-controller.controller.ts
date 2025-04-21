@@ -1,20 +1,19 @@
-import { controller, Get, Post } from "@expressots/adapter-express";
+import { controller, Post, body } from "@expressots/adapter-express";
 
-@controller("/auth/controller")
-export class AuthControllerController {
-    @Post("/auth/register")
-    createUser(){
-        
+@controller("/auth")
+export class AuthController {
+    @Post("/register")
+    createUser(@body() userData: any) {
+        return { message: "User registered successfully" };
     }
 
-    @Post("/auth/login")
-    loginUser(){
-
+    @Post("/login")
+    loginUser(@body() loginData: any) {
+        return { message: "User logged in successfully" };
     }
 
-
-    @Post("/auth/refresh-token")
-    refToken(){
-
+    @Post("/refresh-token")
+    refreshToken(@body() tokenData: any) {
+        return { message: "Token refreshed successfully" };
     }
 }
