@@ -1,29 +1,25 @@
 // src/main.ts
 import { AppFactory } from "@expressots/core";
-import { App } from "./app"; // Fix relative import
+import { App } from "./app";
 import { env } from "./env";
-import { createServer } from "http";
-import { WebSocketServer } from "ws";
-import express from "express";
 
-AppFactory.create(App).then((app) => {
-  const expressApp = app.getServer().engine;  // Get Express instance from app
-  const server = createServer(expressApp); 
-
-  const wss = new WebSocketServer({ noServer: true });
-
+AppFactory.create(App).then(async (webServerBuilder) => {
+  const app = await webServerBuilder.listen(env.App.Port || 3000);
+  const server = await app.getHttpServer();
+  const wss = (app as App).getWebSocketServer();
+  
   server.on("upgrade", (request, socket, head) => {
     wss.handleUpgrade(request, socket, head, (ws) => {
       wss.emit("connection", ws, request);
     });
   });
 
-  // Make WebSocketServer available for DI container
-  app.Provider.registerValue("WebSocketServer", wss);
-
-  server.listen(env.App.Port, () => {
-    console.log(
-      `${env.App.appName} v${env.App.appVersion} listening on ${env.App.Port}`
-    );
+  wss.on('connection', (ws) => {
+    console.log('New WebSocket connection');
   });
+
+  console.log(`Server is running on port ${env.App.Port || 3000}`);
+}).catch((error) => {
+  console.error("Failed to start the application:", error);
+  process.exit(1);
 });

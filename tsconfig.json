@@ -25,7 +25,8 @@
         "noImplicitAny": false,
         "strictPropertyInitialization": false,
         "skipLibCheck": true,
-        "types": ["node", "jest"]
+        "types": ["node", "jest"],
+        "useDefineForClassFields": false
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules", "dist", "test/**/*.ts"]
